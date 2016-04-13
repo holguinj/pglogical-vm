@@ -24,7 +24,7 @@ sudo apt-get update
 
 # install pglogical
 echo "installing pglogical"
-sudo apt-get install -y postgresql-9.5-pglogical
+sudo apt-get install -y postgresql-9.5-pglogical postgresql-9.5-pglogical-output
 
 echo "setting up initial user/db"
 sudo su postgres -c "psql -c 'CREATE USER vagrant;'"
