@@ -12,15 +12,11 @@ sudo echo "max_wal_senders = 10        # one per node needed on provider node" >
 sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.5/main/postgresql.conf
 
 echo "updating pg_hba.conf"
-sudo echo "host    test_replication     postgres        192.168.33.10/32 trust" >> /etc/postgresql/9.5/main/pg_hba.conf
+sudo echo "host    test_replication     rep             192.168.33.10/32 trust" >> /etc/postgresql/9.5/main/pg_hba.conf
+# sudo echo "host    test_replication     postgres        192.168.33.10/32 trust" >> /etc/postgresql/9.5/main/pg_hba.conf
 
 echo "restarting postgres"
 sudo service postgresql restart
-
-echo "creating test_replication db"
-sudo su postgres -c "psql -c 'CREATE DATABASE test_replication'"
-sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO vagrant'"
-sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO postgres'"
 
 # create provider node
 echo "creating the provider node"

@@ -35,5 +35,21 @@ echo "adding pglogical to shared_preload_libraries"
 sudo echo "shared_preload_libraries = 'pglogical'" >> /etc/postgresql/9.5/main/postgresql.conf
 sudo service postgresql restart
 
-echo "creating pglogical extension as $(whoami)"
+echo "creating pglogical extension"
 sudo su postgres -c "psql -c 'CREATE EXTENSION IF NOT EXISTS pglogical;'"
+
+echo "creating the database and table"
+sudo su postgres -c "psql -c 'CREATE DATABASE test_replication'"
+sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO vagrant'"
+sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO postgres'"
+sudo su postgres -c "psql -c 'CREATE USER rep SUPERUSER REPLICATION LOGIN CONNECTION LIMIT 10'"
+sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO rep'"
+
+sudo su postgres -c psql <<EOF
+ \c test_replication;
+ CREATE EXTENSION IF NOT EXISTS pglogical;
+ CREATE TABLE messages(
+  ID INT PRIMARY KEY NOT NULL,
+  MESSAGE TEXT NOT NULL
+ );
+EOF
