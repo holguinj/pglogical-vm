@@ -48,8 +48,4 @@ sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO rep'"
 sudo su postgres -c psql <<EOF
  \c test_replication;
  CREATE EXTENSION IF NOT EXISTS pglogical;
- CREATE TABLE messages(
-  ID INT PRIMARY KEY NOT NULL,
-  MESSAGE TEXT NOT NULL
- );
 EOF

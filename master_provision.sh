@@ -4,6 +4,15 @@ IFS=$'\n\t'
 
 echo "beginning master-specific config:"
 
+echo "creating messages table"
+sudo su postgres -c psql <<EOF
+ \c test_replication;
+ CREATE TABLE messages(
+  ID INT PRIMARY KEY NOT NULL,
+  MESSAGE TEXT NOT NULL
+ );
+EOF
+
 echo "adding lines to postgresql.conf"
 sudo echo "wal_level = 'logical'" >> /etc/postgresql/9.5/main/postgresql.conf
 sudo echo "max_worker_processes = 10   # one per database needed on provider node" >> /etc/postgresql/9.5/main/postgresql.conf
