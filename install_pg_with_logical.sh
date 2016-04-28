@@ -26,6 +26,15 @@ sudo apt-get update
 echo "installing pglogical"
 sudo apt-get install -y postgresql-9.5-pglogical postgresql-9.5-pglogical-output
 
+echo "adding lines to postgresql.conf"
+sudo echo "wal_level = 'logical'" >> /etc/postgresql/9.5/main/postgresql.conf
+sudo echo "max_worker_processes = 10   # one per database needed on provider node" >> /etc/postgresql/9.5/main/postgresql.conf
+sudo echo "max_replication_slots = 10  # one per node needed on provider node" >> /etc/postgresql/9.5/main/postgresql.conf
+sudo echo "max_wal_senders = 10        # one per node needed on provider node" >> /etc/postgresql/9.5/main/postgresql.conf
+sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.5/main/postgresql.conf
+
+sudo service postgresql restart
+
 echo "setting up initial user/db"
 sudo su postgres -c "psql -c 'CREATE USER vagrant;'"
 sudo su postgres -c "psql -c 'CREATE DATABASE vagrant'"

@@ -7,8 +7,8 @@ echo "beginning replica-specific config:"
 sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.5/main/postgresql.conf
 
 echo "updating pg_hba.conf"
-sudo echo "host    replication          rep             192.168.33.10/32 trust" >> /etc/postgresql/9.5/main/pg_hba.conf
-sudo echo "host    test_replication     rep             192.168.33.10/32 trust" >> /etc/postgresql/9.5/main/pg_hba.conf
+sudo echo "host    replication          rep             192.168.33.10/0 trust" >> /etc/postgresql/9.5/main/pg_hba.conf
+sudo echo "host    test_replication     rep             192.168.33.10/0 trust" >> /etc/postgresql/9.5/main/pg_hba.conf
 
 sudo service postgresql restart
 
