@@ -26,17 +26,35 @@ Vagrant.configure(2) do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.define "master" do |master|
-    master.vm.network "private_network", ip: "192.168.33.2"
-    master.vm.provision "shell", inline: <<-SHELL
+
+  config.vm.define "db" do |db|
+    db.vm.network "private_network", ip: "192.168.33.2"
+    db.vm.provision "shell", inline: <<-SHELL
+      set -eu
+      /vagrant/hosts.sh
       /vagrant/install_pg_with_logical.sh
-      /vagrant/master_provision.sh
+      /vagrant/db_provision.sh
+      /vagrant/pe_provision_db.sh
+  SHELL
+  end
+
+  config.vm.define "master" do |master|
+    master.vm.network "private_network", ip: "192.168.33.3"
+    master.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+    end
+    master.vm.provision "shell", inline: <<-SHELL
+      set -eu
+      /vagrant/hosts.sh
+      /vagrant/pe.sh
   SHELL
   end
 
   config.vm.define "replica" do |replica|
     replica.vm.network "private_network", ip: "192.168.33.10"
     replica.vm.provision "shell", inline: <<-SHELL
+      set -eu
+      /vagrant/hosts.sh
       /vagrant/install_pg_with_logical.sh
       /vagrant/replica_provision.sh
   SHELL
