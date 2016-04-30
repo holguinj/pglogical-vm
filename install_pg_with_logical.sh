@@ -13,8 +13,8 @@ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | \
 sudo apt-get update
 
 # install postgres
-echo "installing postgresql 9.5"
-sudo apt-get install -y postgresql-9.5
+echo "installing postgresql 9.4"
+sudo apt-get install -y postgresql-9.4
 
 # add the apt repo for pglogical
 echo "adding the apt-get repo for pglogical"
@@ -24,14 +24,14 @@ sudo apt-get update
 
 # install pglogical
 echo "installing pglogical"
-sudo apt-get install -y postgresql-9.5-pglogical postgresql-9.5-pglogical-output
+sudo apt-get install -y postgresql-9.4-pglogical postgresql-9.4-pglogical-output
 
 echo "adding lines to postgresql.conf"
-sudo echo "wal_level = 'logical'" >> /etc/postgresql/9.5/main/postgresql.conf
-sudo echo "max_worker_processes = 10   # one per database needed on provider node" >> /etc/postgresql/9.5/main/postgresql.conf
-sudo echo "max_replication_slots = 10  # one per node needed on provider node" >> /etc/postgresql/9.5/main/postgresql.conf
-sudo echo "max_wal_senders = 10        # one per node needed on provider node" >> /etc/postgresql/9.5/main/postgresql.conf
-sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.5/main/postgresql.conf
+sudo echo "wal_level = 'logical'" >> /etc/postgresql/9.4/main/postgresql.conf
+sudo echo "max_worker_processes = 10   # one per database needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
+sudo echo "max_replication_slots = 10  # one per node needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
+sudo echo "max_wal_senders = 10        # one per node needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
+sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.4/main/postgresql.conf
 
 sudo service postgresql restart
 
@@ -41,7 +41,7 @@ sudo su postgres -c "psql -c 'CREATE DATABASE vagrant'"
 sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE vagrant TO vagrant'"
 
 echo "adding pglogical to shared_preload_libraries"
-sudo echo "shared_preload_libraries = 'pglogical'" >> /etc/postgresql/9.5/main/postgresql.conf
+sudo echo "shared_preload_libraries = 'pglogical'" >> /etc/postgresql/9.4/main/postgresql.conf
 sudo service postgresql restart
 
 echo "creating pglogical extension"
