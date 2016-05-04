@@ -18,7 +18,6 @@ EOF
 echo "updating pg_hba.conf"
 echo "host    replication          rep             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
 echo "host    test_replication     rep             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
-echo "host    all                  all             0.0.0.0/0       md5"   | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
 
 echo "restarting postgres"
 sudo service postgresql restart

@@ -33,6 +33,16 @@ sudo echo "max_replication_slots = 10  # one per node needed on provider node" >
 sudo echo "max_wal_senders = 10        # one per node needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
 sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.4/main/postgresql.conf
 
+echo "allowing password login for all users"
+echo "host    all                  all             0.0.0.0/0       md5" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+
+echo "allowing replication by PE users"
+echo "host    replication          pe-orchestrator             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    replication          pe-puppetdb             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    replication          pe-activity             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    replication          pe-classifier             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    replication          pe-rbac             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+
 sudo service postgresql restart
 
 echo "setting up initial user/db"

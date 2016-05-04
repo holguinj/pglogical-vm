@@ -35,6 +35,7 @@ Vagrant.configure(2) do |config|
       /vagrant/install_pg_with_logical.sh
       /vagrant/db_provision.sh
       /vagrant/pe_provision_db.sh
+      /vagrant/create_pe_db_nodes.sh
   SHELL
   end
 
@@ -56,7 +57,9 @@ Vagrant.configure(2) do |config|
       set -eu
       /vagrant/hosts.sh
       /vagrant/install_pg_with_logical.sh
+      /vagrant/pe_provision_db.sh
       /vagrant/replica_provision.sh
+      /vagrant/show_classifier_groups.sh
   SHELL
   end
 

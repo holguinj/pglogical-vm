@@ -4,13 +4,6 @@ IFS=$'\n\t'
 
 
 echo "beginning replica-specific config:"
-sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.4/main/postgresql.conf
-
-echo "updating pg_hba.conf"
-sudo echo "host    replication          rep             192.168.33.10/0 trust" >> /etc/postgresql/9.4/main/pg_hba.conf
-sudo echo "host    test_replication     rep             192.168.33.10/0 trust" >> /etc/postgresql/9.4/main/pg_hba.conf
-
-sudo service postgresql restart
 
 # create the subscriber node
 echo "creating the subscriber node"
@@ -21,12 +14,54 @@ EOF
 
 # http://2ndquadrant.com/en-us/resources/pglogical/pglogical-docs/
 
-echo "subscribing"
+echo "creating test_replication subscription"
 sudo su postgres -c psql <<EOF
- \c test_replication;
  SELECT pglogical.create_subscription(
      subscription_name := 'subscription1',
      provider_dsn := 'host=db port=5432 dbname=test_replication user=rep'
  );
 EOF
 
+echo "creating orchestrator subscription"
+sudo su postgres -c psql <<EOF
+ \c pe-orchestrator
+ SELECT pglogical.create_node(node_name := 'orchestrator_subscriber',
+                              dsn := 'host=192.168.33.10 port=5432 dbname=pe-orchestrator user=pe-orchestrator password=puppetlabs');
+ SELECT pglogical.create_subscription(
+     subscription_name := 'orchestrator_sub',
+     provider_dsn := 'host=db port=5432 dbname=pe-orchestrator user=pe-orchestrator password=puppetlabs'
+ );
+EOF
+
+echo "creating activity subscription"
+sudo su postgres -c psql <<EOF
+ \c pe-activity
+ SELECT pglogical.create_node(node_name := 'activity_subscriber',
+                              dsn := 'host=192.168.33.10 port=5432 dbname=pe-activity user=pe-activity password=puppetlabs');
+ SELECT pglogical.create_subscription(
+     subscription_name := 'activity_sub',
+     provider_dsn := 'host=db port=5432 dbname=pe-activity user=pe-activity password=puppetlabs'
+ );
+EOF
+
+echo "creating classifier subscription"
+sudo su postgres -c psql <<EOF
+ \c pe-classifier
+ SELECT pglogical.create_node(node_name := 'classifier_subscriber',
+                              dsn := 'host=192.168.33.10 port=5432 dbname=pe-classifier user=pe-classifier password=puppetlabs');
+ SELECT pglogical.create_subscription(
+     subscription_name := 'classifier_sub',
+     provider_dsn := 'host=db port=5432 dbname=pe-classifier user=pe-classifier password=puppetlabs'
+ );
+EOF
+
+echo "creating rbac subscription"
+sudo su postgres -c psql <<EOF
+ \c pe-rbac
+ SELECT pglogical.create_node(node_name := 'rbac_subscriber',
+                              dsn := 'host=192.168.33.10 port=5432 dbname=pe-rbac user=pe-rbac password=puppetlabs');
+ SELECT pglogical.create_subscription(
+     subscription_name := 'rbac_sub',
+     provider_dsn := 'host=db port=5432 dbname=pe-rbac user=pe-rbac password=puppetlabs'
+ );
+EOF
