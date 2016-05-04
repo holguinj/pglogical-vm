@@ -34,15 +34,21 @@ sudo echo "max_wal_senders = 10        # one per node needed on provider node" >
 sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.4/main/postgresql.conf
 
 echo "allowing password login for all users"
-echo "host    all                  all             0.0.0.0/0       md5" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    all                  all                     0.0.0.0/0       md5" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
 
 echo "allowing replication by PE users"
-echo "host    replication          pe-orchestrator             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    replication          pe-orchestrator         192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
 echo "host    replication          pe-puppetdb             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
 echo "host    replication          pe-activity             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
-echo "host    replication          pe-classifier             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
-echo "host    replication          pe-rbac             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    replication          pe-classifier           192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    replication          pe-rbac                 192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
 
+echo "allowing PE (console) users access to their own databases"
+echo "host    pe-orchestrator      pe-orchestrator         192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    pe-puppetdb          pe-puppetdb             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    pe-activity          pe-activity             192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    pe-classifier        pe-classifier           192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
+echo "host    pe-rbac              pe-rbac                 192.168.33.10/0 trust" | sudo tee -a /etc/postgresql/9.4/main/pg_hba.conf
 sudo service postgresql restart
 
 echo "setting up initial user/db"
@@ -67,4 +73,5 @@ sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO rep'"
 sudo su postgres -c psql <<EOF
  \c test_replication;
  CREATE EXTENSION IF NOT EXISTS pglogical;
+ CREATE EXTENSION IF NOT EXISTS pglogical_origin;
 EOF
