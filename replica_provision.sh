@@ -18,7 +18,8 @@ echo "creating test_replication subscription"
 sudo su postgres -c psql <<EOF
  SELECT pglogical.create_subscription(
      subscription_name := 'subscription1',
-     provider_dsn := 'host=db port=5432 dbname=test_replication user=rep'
+     provider_dsn := 'host=db port=5432 dbname=test_replication user=rep',
+     synchronize_structure := TRUE
  );
 EOF
 
@@ -29,7 +30,8 @@ sudo su postgres -c psql <<EOF
                               dsn := 'host=192.168.33.10 port=5432 dbname=pe-orchestrator user=pe-orchestrator password=puppetlabs');
  SELECT pglogical.create_subscription(
      subscription_name := 'orchestrator_sub',
-     provider_dsn := 'host=db port=5432 dbname=pe-orchestrator user=pe-orchestrator password=puppetlabs'
+     provider_dsn := 'host=db port=5432 dbname=pe-orchestrator user=pe-orchestrator password=puppetlabs',
+     synchronize_structure := TRUE
  );
 EOF
 
@@ -40,7 +42,8 @@ sudo su postgres -c psql <<EOF
                               dsn := 'host=192.168.33.10 port=5432 dbname=pe-activity user=pe-activity password=puppetlabs');
  SELECT pglogical.create_subscription(
      subscription_name := 'activity_sub',
-     provider_dsn := 'host=db port=5432 dbname=pe-activity user=pe-activity password=puppetlabs'
+     provider_dsn := 'host=db port=5432 dbname=pe-activity user=pe-activity password=puppetlabs',
+     synchronize_structure := TRUE
  );
 EOF
 
@@ -51,7 +54,8 @@ sudo su postgres -c psql <<EOF
                               dsn := 'host=192.168.33.10 port=5432 dbname=pe-classifier user=pe-classifier password=puppetlabs');
  SELECT pglogical.create_subscription(
      subscription_name := 'classifier_sub',
-     provider_dsn := 'host=db port=5432 dbname=pe-classifier user=pe-classifier password=puppetlabs'
+     provider_dsn := 'host=db port=5432 dbname=pe-classifier user=pe-classifier password=puppetlabs',
+     synchronize_structure := TRUE
  );
 EOF
 
@@ -62,6 +66,7 @@ sudo su postgres -c psql <<EOF
                               dsn := 'host=192.168.33.10 port=5432 dbname=pe-rbac user=pe-rbac password=puppetlabs');
  SELECT pglogical.create_subscription(
      subscription_name := 'rbac_sub',
-     provider_dsn := 'host=db port=5432 dbname=pe-rbac user=pe-rbac password=puppetlabs'
+     provider_dsn := 'host=db port=5432 dbname=pe-rbac user=pe-rbac password=puppetlabs',
+     synchronize_structure := TRUE
  );
 EOF
