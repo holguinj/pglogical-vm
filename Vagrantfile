@@ -59,6 +59,7 @@ Vagrant.configure(2) do |config|
       /vagrant/install_pg_with_logical.sh
       /vagrant/pe_provision_db.sh
       /vagrant/replica_provision.sh
+      sleep 10
       /vagrant/show_classifier_groups.sh
   SHELL
   end
