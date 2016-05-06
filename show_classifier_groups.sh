@@ -21,8 +21,20 @@ PGPASSWORD=puppetlabs psql -h db -U pe-classifier <<EOF
  SELECT * FROM groups;
 EOF
 
-echo "selecting * from groups. If this fails, replication isn't working."
+echo "selecting * from groups on the replica"
 sudo su postgres -c psql <<EOF
  \c pe-classifier;
  SELECT * FROM groups;
+EOF
+
+echo "selecting rbac roles on the db node for reference:"
+PGPASSWORD=puppetlabs psql -h db -U pe-rbac <<EOF
+ \c pe-rbac;
+ SELECT * FROM roles;
+EOF
+
+echo "selecting * from roles on the replica"
+sudo su postgres -c psql <<EOF
+ \c pe-rbac;
+ SELECT * FROM roles;
 EOF

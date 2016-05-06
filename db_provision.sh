@@ -33,5 +33,5 @@ EOF
 echo "adding public tables to the default replication set"
 sudo su postgres -c psql <<EOF
  \c test_replication;
- SELECT pglogical.replication_set_add_all_tables('default', ARRAY['public']);
+ SELECT pglogical.replication_set_add_all_tables('default', ARRAY['public'], TRUE);
 EOF
