@@ -28,9 +28,9 @@ sudo apt-get install -y postgresql-9.4-pglogical postgresql-9.4-pglogical-output
 
 echo "adding lines to postgresql.conf"
 sudo echo "wal_level = 'logical'" >> /etc/postgresql/9.4/main/postgresql.conf
-sudo echo "max_worker_processes = 10   # one per database needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
-sudo echo "max_replication_slots = 10  # one per node needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
-sudo echo "max_wal_senders = 10        # one per node needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
+sudo echo "max_worker_processes = 20   # one per database needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
+sudo echo "max_replication_slots = 20  # one per node needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
+sudo echo "max_wal_senders = 20        # one per node needed on provider node" >> /etc/postgresql/9.4/main/postgresql.conf
 sudo echo "listen_addresses = '*'" >> /etc/postgresql/9.4/main/postgresql.conf
 
 echo "trusting the rep user"
