@@ -1,0 +1,3 @@
+[submodule "classifier/classifier"]
+	path = classifier/classifier
+	url = git@github.com:/puppetlabs/classifier

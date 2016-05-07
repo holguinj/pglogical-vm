@@ -29,6 +29,9 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "db" do |db|
     db.vm.network "private_network", ip: "192.168.33.2"
+    db.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+    end
     db.vm.provision "shell", inline: <<-SHELL
       set -eu
       /vagrant/hosts.sh
@@ -36,6 +39,11 @@ Vagrant.configure(2) do |config|
       /vagrant/db_provision.sh
       /vagrant/pe_provision_db.sh
       /vagrant/create_pe_db_nodes.sh
+      /vagrant/classifier/install_lein.sh
+      /vagrant/classifier/classifier_db.sh
+      /vagrant/classifier/start_classifier.sh
+      sleep 210
+      /vagrant/classifier/classifier_master.sh
   SHELL
   end
 
@@ -59,8 +67,12 @@ Vagrant.configure(2) do |config|
       /vagrant/install_pg_with_logical.sh
       /vagrant/pe_provision_db.sh
       /vagrant/replica_provision.sh
-      sleep 10
-      /vagrant/show_classifier_groups.sh
+      # sleep 10
+      # /vagrant/show_classifier_groups.sh
+      /vagrant/classifier/install_lein.sh
+      /vagrant/classifier/classifier_db.sh
+      /vagrant/classifier/classifier_replica.sh
+      /vagrant/classifier/start_classifier.sh
   SHELL
   end
 
