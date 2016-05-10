@@ -41,7 +41,7 @@ Vagrant.configure(2) do |config|
       /vagrant/create_pe_db_nodes.sh
       /vagrant/classifier/install_lein.sh
       /vagrant/classifier/classifier_db.sh
-      /vagrant/classifier/start_classifier.sh
+      /vagrant/classifier/start_classifier_master.sh
       sleep 210
       /vagrant/classifier/classifier_master.sh
   SHELL
@@ -72,7 +72,7 @@ Vagrant.configure(2) do |config|
       /vagrant/classifier/install_lein.sh
       /vagrant/classifier/classifier_db.sh
       /vagrant/classifier/classifier_replica.sh
-      /vagrant/classifier/start_classifier.sh
+      /vagrant/classifier/start_classifier_replica.sh
   SHELL
   end
 

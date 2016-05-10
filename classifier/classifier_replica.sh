@@ -4,6 +4,10 @@ set -euo pipefail
 # database setup
 sudo su postgres -c psql <<EOF
  \c spike-classifier
+ CREATE ROLE "readonly-classifier" LOGIN PASSWORD 'readonly-classifier';
+ ALTER DEFAULT PRIVILEGES FOR ROLE "readonly-classifier" IN SCHEMA public
+   GRANT SELECT ON TABLES TO "readonly-classifier";
+
  CREATE EXTENSION pglogical;
  CREATE EXTENSION pglogical_origin;
  SELECT pglogical.create_node(node_name := 'spike_classifier_subscriber',

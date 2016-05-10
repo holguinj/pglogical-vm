@@ -2,4 +2,4 @@
 set -euo pipefail
 
 cd /vagrant/classifier/classifier
-lein run --config ../spike-conf.d &
+lein run --config ../replica-conf.d &
