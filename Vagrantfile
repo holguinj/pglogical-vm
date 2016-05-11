@@ -30,7 +30,7 @@ Vagrant.configure(2) do |config|
   config.vm.define "db" do |db|
     db.vm.network "private_network", ip: "192.168.33.2"
     db.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "4096"
     end
     db.vm.provision "shell", inline: <<-SHELL
       set -eu
@@ -61,6 +61,9 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "replica" do |replica|
     replica.vm.network "private_network", ip: "192.168.33.10"
+    replica.vm.provider "virtualbox" do |vb|
+      vb.memory = "4096"
+    end
     replica.vm.provision "shell", inline: <<-SHELL
       set -eu
       /vagrant/hosts.sh
