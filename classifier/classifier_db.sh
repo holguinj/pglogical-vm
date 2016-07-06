@@ -14,6 +14,7 @@ sudo su postgres -c psql <<EOF
  CREATE DATABASE perbac_test WITH OWNER=perbac;
  \c perbac_test
  CREATE EXTENSION IF NOT EXISTS citext;
+ GRANT ALL ON DATABASE perbac_test to perbac;
  GRANT ALL ON DATABASE perbac_test to replicator;
 
  CREATE USER activity LOGIN PASSWORD 'activity';

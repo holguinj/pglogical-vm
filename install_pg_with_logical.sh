@@ -65,6 +65,7 @@ sudo echo "shared_preload_libraries = 'pglogical'" >> /etc/postgresql/9.4/main/p
 sudo service postgresql restart
 
 echo "creating pglogical extension"
+sudo su postgres -c "psql -c 'CREATE EXTENSION IF NOT EXISTS pglogical_origin;'"
 sudo su postgres -c "psql -c 'CREATE EXTENSION IF NOT EXISTS pglogical;'"
 
 echo "creating the database and table"
@@ -76,6 +77,6 @@ sudo su postgres -c "psql -c 'GRANT ALL ON DATABASE test_replication TO rep'"
 
 sudo su postgres -c psql <<EOF
  \c test_replication;
- CREATE EXTENSION IF NOT EXISTS pglogical;
  CREATE EXTENSION IF NOT EXISTS pglogical_origin;
+ CREATE EXTENSION IF NOT EXISTS pglogical;
 EOF
